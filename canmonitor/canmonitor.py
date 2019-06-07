@@ -105,8 +105,8 @@ def main(stdscr, reading_thread):
 
             column_width = 50
             id_column_start = 2
-            bytes_column_start = 13
-            text_column_start = 38
+            bytes_column_start = 14
+            #text_column_start = 60
 
             # Compute row/column counts according to the window size and borders
             row_start = 3
@@ -115,11 +115,11 @@ def main(stdscr, reading_thread):
 
             # Setting up column headers
             for i in range(0, num_columns):
-                win.addstr(1, id_column_start + i * column_width, 'ID')
-                win.addstr(1, bytes_column_start + i * column_width, 'Bytes')
-                win.addstr(1, text_column_start + i * column_width, 'Text')
+                win.addstr(3, id_column_start + i * column_width, 'hex_ID')
+                win.addstr(3, bytes_column_start + i * column_width, 'Bytes')
+               # win.addstr(1, text_column_start + i * column_width, 'Text')
 
-            win.addstr(3, id_column_start, "Press 'q' to quit")
+            win.addstr(1, id_column_start, "Press 'C' to quit")
 
             row = row_start + 2  # The first column starts a bit lower to make space for the 'press q to quit message'
             current_column = 0
@@ -134,14 +134,15 @@ def main(stdscr, reading_thread):
                     msg_str = format_data_ascii(msg)
 
                     # print frame ID in decimal and hex
-                    win.addstr(row, id_column_start + current_column * column_width, '%s' % str(frame_id).ljust(5))
-                    win.addstr(row, id_column_start + 5 + current_column * column_width, '%X'.ljust(5) % frame_id)
+                   # win.addstr(row, id_column_start + current_column * column_width, '%s' % str(frame_id).ljust(5))
+                    win.addstr(row, id_column_start + current_column * column_width, '%X'.ljust(5) % frame_id)
 
                     # print frame bytes
                     win.addstr(row, bytes_column_start + current_column * column_width, msg_bytes.ljust(23))
+                  
 
                     # print frame text
-                    win.addstr(row, text_column_start + current_column * column_width, msg_str.ljust(8))
+                    # win.addstr(row, text_column_start + current_column * column_width, msg_str.ljust(8))
 
                     row = row + 1
 
@@ -158,7 +159,7 @@ def main(stdscr, reading_thread):
             should_redraw.clear()
 
         c = stdscr.getch()
-        if c == ord('q') or not reading_thread.is_alive():
+        if c == ord('c') or not reading_thread.is_alive():
             break
         elif c == curses.KEY_RESIZE:
             win = init_window(stdscr)
